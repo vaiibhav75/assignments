@@ -17,5 +17,27 @@ const fs = require('fs');
 const path = require('path');
 const app = express();
 
+app.get("/file/:filename", (req,res) => {
 
+        fs.readFile(`files//${req.params.filename}.txt`, (err, data) => {
+            if (err) {
+                return res.status(404).send("File not found");
+            } else {
+                return res.send(data);
+            }
+        })
+
+})
+
+
+app.get("/files", (req,res) => {
+    const files = fs.readdirSync("files/");
+    res.status(200).send(files);
+})
+
+app.use((req, res) => {
+    res.status(404).send('Route not found');
+});
+app.listen(3000, () => console.log("Working fine"));
 module.exports = app;
+

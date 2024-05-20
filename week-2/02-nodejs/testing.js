@@ -44,25 +44,25 @@
 const fs = require("fs");
 let toDolist = [];
 function read(){
-  return new Promise((resolve) => {
-    fs.readFile('files//toDolist.txt', (err, data) => {
-      let fileData = data.toString().trim();
-      let list = fileData.split("\n\n\n");
-      toDolist = list.map((element) => JSON.parse(element));
-      resolve();
-    })
+    return new Promise((resolve) => {
+        fs.readFile('files//toDolist.txt', (err, data) => {
+            let fileData = data.toString().trim();
+            let list = fileData.split("\n\n\n");
+            toDolist = list.map((element) => JSON.parse(element));
+            resolve();
+        })
 
-  })
+    })
 }
 
 function write() {
-  return new Promise((resolve) => {
-    let writeData = "";
-    toDolist.map((x) => {
-      writeData += JSON.stringify(x) + "\n\n\n";
+    return new Promise((resolve) => {
+        let writeData = "";
+        toDolist.map((x) => {
+            writeData += JSON.stringify(x) + "\n\n\n";
+        })
+        fs.writeFile('files//toDolist.txt', writeData, (err) => {resolve()});
     })
-    fs.writeFile('files//toDolist.txt', writeData, (err) => {resolve()});
-  })
 
 }
 
@@ -75,60 +75,60 @@ const app = express();
 app.use(bodyParser.json());
 
 function check (req,res,next) {
-  read().then(() => {
-    if (toDolist[parseInt(req.params.id)] === undefined) {
-      return res.status(404).json({
-        msg:"TCS me bhi nahi ja payega bsdk"
-      })
+    read().then(() => {
+        if (toDolist[parseInt(req.params.id)] === undefined) {
+            return res.status(404).json({
+                msg:"TCS me bhi nahi ja payega bsdk"
+            })
 
-    } else {
-      next();
-    }
-  })
+        } else {
+            next();
+        }
+    })
 
 }
 app.get("/todos", (req,res) => {
-  read().then(() => {
-    res.json({
-      toDoList: toDolist
+    read().then(() => {
+        res.json({
+            toDoList: toDolist
+        })
     })
-  })
 })
 
 app.get("/todos/:id", check, (req,res) => {
-  read().then(() => {
-    console.log(parseInt(req.params.id))
-    res.json(toDolist[parseInt(req.params.id)]);
-  })
+    read().then(() => {
+        console.log(parseInt(req.params.id))
+        res.json(toDolist[parseInt(req.params.id)]);
+    })
 
 })
 
 app.post("/todos", (req, res) => {
-  const object = {
-    title: req.body.title,
-    description: req.body.description
-  }
+    const object = {
+        title: req.body.title,
+        description: req.body.description
+    }
 
-  toDolist.push(object);
+    toDolist.push(object);
 
-  write().then(() => {
-    res.json({msg: "Ho gya"})
-  })
+    write().then(() => {
+        res.json({msg: "Ho gya"})
+    })
 })
 
 app.put("/todos/:id", check, (req,res) => {
-  toDolist[parseInt(req.params.id)].title = req.body.title;
-  write().then(() => {
-    res.json({msg: "ye bhi ho gya"});
-  })
+    toDolist[parseInt(req.params.id)].title = req.body.title;
+    write().then(() => {
+        res.json({msg: "ye bhi ho gya"});
+    })
 })
 
 app.delete("/todos/:id", check, (req,res) => {
-  toDolist.splice(parseInt(req.params.id),1);
-  toDolist = toDolist.filter((x) => x !== undefined)
-  write().then(() => {
-    res.json({msg : "kar diya delete"});
-  })
+    toDolist.splice(parseInt(req.params.id),1);
+    toDolist = toDolist.filter((x) => x !== undefined)
+    write().then(() => {
+        res.json({msg : "kar diya delete"});
+    })
 })
 
 app.listen(3000, () => console.log("Chal rha h server"));

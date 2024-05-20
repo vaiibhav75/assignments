@@ -3,8 +3,26 @@
  * During this time the thread should not be able to do anything else.
  * the function should return a promise just like before
  */
-
+let run = true;
 function sleep(milliseconds) {
+    return new Promise((resolve) => {
+
+        setTimeout(() => {
+            run = false
+            resolve()
+        }, milliseconds);
+
+        const id = setInterval(() => {
+            if (!keeprunning()) {
+                clearInterval(id);
+            }
+        },10)
+
+    })
+}
+
+function keeprunning () {
+    return run;
 }
 
 module.exports = sleep;
