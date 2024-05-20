@@ -4,7 +4,7 @@ You have to create a simple React App which has a reusable Card Component which 
     - Name
     - A short description
     - LinkedIn, Twitter and other Social Media Handle buttons
-    - Interests Section
+    - Interests Sectionm
  - You can assume that this is kind of an e-business card and feel free to put in your creativity
  - Additional & Slightly advanced:
     - Create a page where you can add these kind of Cards by taking input from the user
