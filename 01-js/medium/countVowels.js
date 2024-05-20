@@ -6,6 +6,18 @@
 */
 
 function countVowels(str) {
+    let ans = 0;
+    console.log(str)
+    for (let i = 0; i < str.length; i++) {
+        const x = str.charAt(i);
+        if (x === 'a' || x === 'e' || x === 'i' || x === 'o' || x === 'u' || x === 'A' || x === 'E' || x === 'I' || x === 'O' || x === 'U') {
+            ans++;
+        }
+
+    }
+    console.log(ans)
+
+    return ans;
     // Your code here
 }
 

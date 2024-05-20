@@ -16,6 +16,73 @@
   Once you've implemented the logic, test your code by running
 */
 
-class Calculator {}
+class Calculator {
+    constructor() {
+        this.result = 0;
+    }
+
+    calculate(s) {
+        s = s.replace(/\s+/g, '').trim();
+
+        const calculationError = new CalculationError("Invalid calculation");
+
+        if (!/^[0-9+\-*/().\s]+$/.test(s)) {
+            throw calculationError;
+        }
+
+
+
+        try {
+            const ans = eval(s);
+
+            if (isNaN(ans) || !isFinite(ans)) {
+                throw calculationError;
+            }
+
+            this.result = ans;
+            return ans;
+        } catch (error) {
+            throw calculationError;
+        }
+    }
+
+    add(num) {
+        this.result += Number(num);
+    }
+
+    subtract(num) {
+        this.result -= Number(num);
+    }
+
+    multiply(num) {
+        this.result *= Number(num);
+    }
+
+    divide(num) {
+        const divisor = Number(num);
+        if (divisor === 0 || !isFinite(this.result / divisor)) {
+            throw new CalculationError("Invalid division");
+        }
+        this.result /= divisor;
+    }
+
+    clear() {
+        this.result = 0;
+    }
+
+    getResult() {
+        return this.result;
+    }
+}
+
+class CalculationError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = 'CalculationError';
+    }
+}
+
+console.log(eval("2 + 3 * (4-4*(22))"))
+
 
 module.exports = Calculator;
